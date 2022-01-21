@@ -14,7 +14,7 @@ window.onload = function init() {
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) { alert("WebGL isn't available"); }
 
-    
+
     var vertices = new Float32Array(
         [
             -0.65, 0.35,
@@ -29,7 +29,7 @@ window.onload = function init() {
     //  Configure WebGL
 
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(1.0, 0.0, 1.0, 0.2);
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
     //  Load shaders and initialize attribute buffers
 
