@@ -43,19 +43,28 @@ window.onload = function init() {
     // Meðhöndlun á músarsmellum
     canvas.addEventListener("mousedown", function (e) {
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+        // if left mouse button clicked
+        if (e.button === 0) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+    
+            // Reikna heimshnit músarinnar út frá skjáhnitum
+            var t = vec2(2 * e.offsetX / canvas.width - 1, 2 * (canvas.height - e.offsetY) / canvas.height - 1);
+            points = [];
+    
+            // Create a triangle in the middle of where the mouse clicked
+            triangle(t);
+    
+            // Færa þessi hnit yfir í grafíkminni, á réttan stað
+            gl.bufferSubData(gl.ARRAY_BUFFER, 8 * 3 * index, flatten(points));
+    
+            index++;
+        }
 
-        // Reikna heimshnit músarinnar út frá skjáhnitum
-        var t = vec2(2 * e.offsetX / canvas.width - 1, 2 * (canvas.height - e.offsetY) / canvas.height - 1);
-        points = [];
-
-        // Create a triangle in the middle of where the mouse clicked
-        triangle(t);
-
-        // Færa þessi hnit yfir í grafíkminni, á réttan stað
-        gl.bufferSubData(gl.ARRAY_BUFFER, 8 * 3 * index, flatten(points));
-
-        index++;
+        // if right mouse button clicked
+        if (e.button === 2) {
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            index = 0;
+        }
     });
 
     render();

@@ -26,6 +26,13 @@ main()
 }
 </script>
 
+<script>
+    // Adding this to disable the right-click dropdown menu
+    document.oncontextmenu = function() {
+        return false;
+    }
+</script>
+
 <script type="text/javascript" src="./triangles_files/initShaders.js"></script>
 <script type="text/javascript" src="./triangles_files/webgl-utils.js"></script>
 <script type="text/javascript" src="./triangles_files/MV.js"></script>
