@@ -8,13 +8,16 @@ var canvas;
 var gl;
 
 // numCirclePoints er fjöldi punkta á hringnum
+// Heildarfjöldi punkta er tveimur meiri (miðpunktur + fyrsti punktur kemur tvisvar)
 
-var numCirclePoints = 20;
+var numCirclePoints = 4;
 var triangleMultiplier = 3;
 numCirclePoints *= triangleMultiplier;
 
 var radius = 0.4;
 var center = vec2(0, 0);
+
+var bufferID;
 
 var points = [];
 
@@ -34,18 +37,21 @@ function init() {
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    // Create the circle
-    // points.push(center);
-
-    createCirclePoints(center, radius, numCirclePoints);
-
-    var vBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+    // Load data to GPU
+    bufferID = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferID);
+    gl.bufferData(gl.ARRAY_BUFFER, 8 * Math.pow(3, 6), gl.STATIC_DRAW);
+    // gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
 
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
+
+    document.getElementById("slider").onchange = function (event) {
+        numCirclePoints = event.target.value;
+        numCirclePoints *= triangleMultiplier;
+        render();
+    };
 
     render();
 }
@@ -65,17 +71,19 @@ function createCirclePoints(cent, rad, k) {
         var p2 = vec2(rad * Math.sin(a2) + cent[0], rad * Math.cos(a2) + cent[1]);
         points.push(p2); // horn 2 á nuverandi thrihyrning
     }
-    console.log(points);
 }
 
 window.onload = init;
 
 function render() {
 
+    points = [];
+    createCirclePoints(center, radius, numCirclePoints);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     // Draw circle using Triangles
     gl.drawArrays(gl.TRIANGLES, 0, numCirclePoints + 2);
-
-    window.requestAnimFrame(render);
+    points = [];
+    // window.requestAnimFrame(render);
 }
