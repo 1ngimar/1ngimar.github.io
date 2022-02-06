@@ -25,10 +25,29 @@ var mario = vec2(-0.85, -0.5);
 var m_dX = 0.0;
 var m_dY = 0.0;
 const r = 0.05;
+const m_height = r * 2;
+const m_width = r * 2;
 var m_vx = 0;
 var m_vy = 0;
 var m_ax = 0;
 var m_ay = 0.1;
+var m_box = mario;
+var m_boxVertices = [
+    vec2(m_box[0] - r, m_box[1] + r),
+    vec2(m_box[0] + r, m_box[1] + r),
+    vec2(m_box[0] + r, m_box[1] - r),
+    vec2(m_box[0] - r, m_box[1] + r),
+    vec2(m_box[0] - r, m_box[1] - r),
+    vec2(m_box[0] + r, m_box[1] - r)
+];
+var m_boxColors = [
+    vec4(1.0, 0.0, 0.0, 1.0),
+    vec4(1.0, 0.0, 0.0, 1.0),
+    vec4(1.0, 0.0, 0.0, 1.0),
+    vec4(1.0, 0.0, 0.0, 1.0),
+    vec4(1.0, 0.0, 0.0, 1.0),
+    vec4(1.0, 0.0, 0.0, 1.0)
+];
 
 var m_orientation = 0;      // hvernig mario snýr (0 := hægri, 1 := vinstri)
 var m_jumping = false;
@@ -48,42 +67,73 @@ var coinColors = [];
 var countOfAllCoins = 0;
 
 
-var box1Width = 0.6;
-var box1Height = 0.2;
-var box1Position = vec2(0.0, -0.9);
-var box1Vertices = [
-    // bottom rectangle
-    vec2(-0.3, -0.8),
-    vec2(-0.3, -1.0),
-    vec2(0.3, -1.0),
-    vec2(0.3, -0.8),
-    vec2(0.3, -1.0),
-    vec2(-0.3, -0.8)
+var killerTriangles = vec2(0.0, -1.0 );
+var killerTrianglesWidth = 0.3;
+var kt_halfWidth = killerTrianglesWidth / 2;
+var kt_qWidth = kt_halfWidth / 2;
+var killerTrianglesHeight = 0.2;
+var kt_halfHeight = killerTrianglesHeight / 2;
+var kt_qHeight = kt_halfHeight / 2;
+var killerTrianglesVertices = [
+    vec2(killerTriangles[0] - kt_halfWidth, killerTriangles[1]),
+    vec2(killerTriangles[0] - kt_qWidth, killerTriangles[1] + kt_qHeight),
+    vec2(killerTriangles[0], killerTriangles[1]),
+    vec2(killerTriangles[0] + kt_halfWidth, killerTriangles[1]),
+    vec2(killerTriangles[0] + kt_qWidth, killerTriangles[1] + kt_qHeight),
+    vec2(killerTriangles[0], killerTriangles[1]),
 ];
+var onTriangle = false;
 
-var box2Width = 0.3;
-var box2Height = 0.2;
-var box2Position = vec2(0.0, -0.7);
-var box2Vertices = [
-    // top rectangle
-    vec2(-0.15, -0.6),
-    vec2(-0.15, -0.8),
-    vec2(0.15, -0.8),
-    vec2(-0.15, -0.6),
-    vec2(0.15, -0.6),
-    vec2(0.15, -0.8)
-];
+var gameOver = false;
 
-var allBoxVertices = [];
-allBoxVertices.push(...box1Vertices);
-allBoxVertices.push(...box2Vertices);
+// var box2Position = vec2(0.0, -0.7);
+// var box2Width = 0.3;
+// var box2Height = 0.2;
+// var box2Vertices = [
+//     // top rectangle
+//     vec2(-0.15, -0.6),
+//     vec2(-0.15, -0.8),
+//     vec2(0.15, -0.8),
+//     vec2(-0.15, -0.6),
+//     vec2(0.15, -0.6),
+//     vec2(0.15, -0.8)
+// ];
+// var onBox2 = false;
 
-var boxColors = [];
-for (let i = 0; i < allBoxVertices.length; i++) {
-    boxColors.push(vec4(0.1, 0.4, 0.5, 1.0));
+// allBoxVertices.push(...box2Vertices);
+
+var killerTrianglesColors = [];
+for (let i = 0; i < killerTrianglesVertices.length; i++) {
+    killerTrianglesColors.push(vec4(1.0, 0.0, 0.0, 1.0));
 }
 
+
+
 var score = 0;
+var scoreColors = [];
+
+function updateScore() {
+    var scorevertices = [];
+    scoreColors = [];
+    var buff = -0.95;
+    for (let i = 0; i < score; i++) {
+        buff += 0.06;
+        scorevertices.push(vec2( buff-0.02, 0.85 ));
+        scorevertices.push(vec2( buff, 0.85 ));
+        scorevertices.push(vec2( buff-0.02, 0.7 ));
+        scorevertices.push(vec2( buff-0.02, 0.7 ));
+        scorevertices.push(vec2( buff, 0.85 ));
+        scorevertices.push(vec2( buff, 0.7 ));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+        scoreColors.push(vec4(1.0, 1.0, 0.0, 1.0));
+    }
+    return scorevertices;
+}
+
 
 const marioColors = [
     vec4(0.0, 0.0, 1.0, 1.0),
@@ -93,51 +143,68 @@ const marioColors = [
 
 function drawMario() {
 
-    
-
     if (pressed_right === 1 && !m_falling) {
         if (Math.abs(mario[0] + m_dX) < maxX - r || mario[0] + r < maxX) {
             m_dX += 0.01; // sweetspot
+            // mario[0] += 0.05;
         }
         else {
             m_dX = 0.0;
+            // mario[0] = 0.0;
         }
         m_orientation = 0;
     }
-    if (pressed_left === 1 && !m_falling) {
+    else if (pressed_left === 1 && !m_falling) {
         if (Math.abs(mario[0] + m_dX) < maxX - r || mario[0] - r > -maxX) {
             m_dX -= 0.01; // sweetspot
+            // mario[0] -= 0.05;
         }
         else {
             m_dX = 0.0;
+            // mario[0] = 0.0;
         }
         m_orientation = 1;
     }
     else if (m_falling && m_dX > 0) {
         if (Math.abs(mario[0] + m_dX) < maxX - r || mario[0] + r < maxX) {
             m_dX *= 1.25; // sweetspot
+            // mario[0] += 0.05;
         }
         else {
             m_dX = 0.0;
+            // mario[0] = 0.0;
         }
     }
     else if (m_falling && m_dX < 0) {
         if (Math.abs(mario[0] + m_dX) < maxX - r || mario[0] - r > -maxX) {
             m_dX *= 1.25; // sweetspot
+            // mario[0] += 0.05;
         }
         else {
             m_dX = 0.0;
+            // mario[0] = 0.0;
         }
     }
 
-    // update mario's position on x-axis
+    if (checkMarioCollision(mario, killerTriangles, m_width, killerTrianglesWidth, m_height, killerTrianglesHeight)) {
+        m_dY = 0.0;
+        m_dX = 0.0;
+        m_falling = false;
+        onTriangle = true;
+        gameOver = true;
+    }
+
     mario[0] += m_dX;
+
+    // update mario's position on x-axis
     m_dX /= 1.3
 
     if (m_jumping) {
         m_dY += 0.06;
+        m_falling = false;
+        m_jumping = false;
     }
-    if (Math.abs(mario[1] + m_dY) < maxY - r) {
+    else if (Math.abs(mario[1] + m_dY) < maxY - r) {
         m_falling = true;
         m_jumping = false;
     }
@@ -148,8 +215,7 @@ function drawMario() {
     if (m_falling) {
         m_dY -= 0.01 * g;
     }
-
-    // Update Mario's position on y-axis
+    
     mario[1] += m_dY;
 
     if (m_orientation == 0) {
@@ -175,15 +241,24 @@ function drawMario() {
 // r1 is the radius of figure 1
 // r2 is the radius of figure 2
 function checkCollision(a, b, a_width, b_width, a_height, b_height) {
-    if (a[0] + a_width >= b[0] &&
-        a[0] <= b[0] + b_width &&
-        a[1] + a_height >= b[1] &&
-        a[1] <= b[1] + b_height) {
+    if (a[0] + a_width*2 >= b[0] &&
+        a[0] <= b[0] + b_width*2 &&
+        a[1] + a_height*2 >= b[1] &&
+        a[1] <= b[1] + b_height*2) {
         return true;
     }
     return false;
 }
 
+function checkMarioCollision(a, b, a_width, b_width, a_height, b_height) {
+    if (!m_jumping) {
+        if (Math.abs(a[0] + a_width / 2 + m_dX) < Math.abs(b[0] - b_width / 2) &&
+            (a[1] + m_height < b[1] + b_height)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 function drawCoins() {
@@ -198,18 +273,8 @@ function drawCoins() {
             k = Math.floor(k / 3);
             var a = 0;
             var a2 = 0;
-            var isPositionOK = false;
-            var coinPos;
-            while (!isPositionOK) {
-                coinPos = getRandomPosition();
-                if ( // seems to be not working
-                    checkCollision(coinPos, box1Position, coinRadius, box1Width+0.1, coinRadius, box1Height+0.1) === false &&
-                    checkCollision(coinPos, box2Position, coinRadius, box2Width+0.1, coinRadius, box2Height+0.1) === false) {
-                    isPositionOK = true;
-                }
-            }
+            var coinPos = getRandomPosition();
             coinPositions.push(coinPos);
-            // var coinPos = vec2(0.5, 0.0);
             for (i = 0; i < k; i += 1) {
                 coinVertices.push(coinPos); // middle of the coin
                 a = i * dAngle;
@@ -269,14 +334,10 @@ function deleteCoin(coin) {
 
 function getRandomPosition() {
     var x;
-    var y;
-    var t1 = Math.random();
-    var y = Math.random() - 1;
-    if (t1 > 0.5) {
-        x = t1 - 1;
-    }
-    else {
-        x = t1;
+    var x = (Math.random() * 2) - 1;
+    var y = (Math.random() * 0.4) - 1;
+    if (x > -killerTrianglesWidth / 2 && x < killerTrianglesWidth / 2) {
+        y += killerTrianglesHeight; //+ box2Height;
     }
     return vec2(x, y);
 }
@@ -290,22 +351,31 @@ function checkCoinCollision() {
         var cPos = coinPositions[i];
         if (checkCollision(mario, cPos, r, coinRadius, r, coinRadius)) {
             deleteCoin(cPos);
-            console.log(++score);
+            ++score;
         }
     }
 }
 
 var count = 0;
 function updateEveryting(myVertices, myColors) {
-    myVertices.push(...drawMario());
-    myColors.push(...marioColors);
+    if (!gameOver) {
+        myVertices.push(...drawMario());
+        myColors.push(...marioColors);
+        
+        myVertices.push(...killerTrianglesVertices);
+        myColors.push(...killerTrianglesColors);
+        myVertices.push(...drawCoins());
+        myColors.push(...coinColors);
 
-    myVertices.push(...allBoxVertices);
-    myColors.push(...boxColors);
-    myVertices.push(...drawCoins());
-    myColors.push(...coinColors);
-
-    checkCoinCollision();
+        myVertices.push(...updateScore());
+        myColors.push(...scoreColors);
+        
+        checkCoinCollision();
+    }
+    else {
+        myVertices.push(...updateScore());
+        myColors.push(...scoreColors);
+    }
 }
 
 function render() {
