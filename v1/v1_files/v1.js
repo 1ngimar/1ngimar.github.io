@@ -384,8 +384,8 @@ function render() {
     var myColors = [];
     updateEveryting(myVertices, myColors);
 
-    var vPosition = gl.getAttribLocation(program, 'verPosition');
-    var vColor = gl.getAttribLocation(program, 'verColor');
+    var vPosition = gl.getAttribLocation(program, 'vPosition');
+    var vColor = gl.getAttribLocation(program, 'vColor');
 
     gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
