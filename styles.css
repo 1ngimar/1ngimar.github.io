@@ -18,6 +18,38 @@ svg {
     /* height: auto; */
 }
 
-/* .body:hover {
-    
-} */
+#topGroup,
+#leftGroup,
+#rightGroup {
+    transition: all 1s ease;
+}
+
+#topGroup {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+#leftGroup {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+#rightGroup {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+body:hover #topGroup {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+body:hover #leftGroup {
+    transform: translateX(0%);
+    opacity: 1;
+}
+
+body:hover #rightGroup {
+    transform: translateX(0%);
+    opacity: 1;
+}
