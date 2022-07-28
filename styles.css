@@ -5,17 +5,22 @@ body {
 }
 
 .container-outer {
-    /* display: flex; */
-    /* gap: 60px; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 60px;
 }
 
-.container {
+.container-inner {
     /* text-align: center; */
+    /* max-width: min-content; */
+    max-width: 33.3%; 
+    height: auto;
 }
 
 svg {
-    /* max-width: 200px;  */
-    /* height: auto; */
+    /* max-width: 33.3%;  */
+    height: auto;
 }
 
 #topGroup,
