@@ -4,6 +4,20 @@ body {
     text-align: center;
 }
 
-.body:hover {
-    
+.container-outer {
+    /* display: flex; */
+    /* gap: 60px; */
 }
+
+.container {
+    /* text-align: center; */
+}
+
+svg {
+    /* max-width: 200px;  */
+    /* height: auto; */
+}
+
+/* .body:hover {
+    
+} */
