@@ -6,8 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fleeing animation</title>
     <link rel="stylesheet/less" type="text/css" href="./design3_files/styles.less" />
-    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/less"></script>
 </head>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+    attribute  vec4 vPosition;
+    attribute  vec4 vColor;
+    varying vec4 fColor;
+    
+    uniform mat4 rotation;
+    
+    void main()
+    {
+        fColor = vColor;
+        gl_Position = rotation * vPosition;
+    }
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+    precision mediump float;
+    
+    varying vec4 fColor;
+    
+    void
+    main()
+    {
+        gl_FragColor = fColor;
+    }
+</script>
+
+<script type="text/javascript" src="./solkerfi_files/webgl-utils.js"></script>
+<script type="text/javascript" src="./solkerfi_files/initShaders.js"></script>
+<script type="text/javascript" src="./solkerfi_files/MV.js"></script>
+<script type="text/javascript" src="./solkerfi_files/solkerfi.js"></script>
 
 <body id="body">
 
@@ -183,5 +216,7 @@
         </clipPath>
     </defs>
 </svg>
+<!-- <script src="/assets/design-system/js/libraries/iframe-resizer/iframeResizer.contentWindow.min.js"></script> -->
 <script type="text/javascript" src="design3_files/script.js"></script>
+
 </html>
