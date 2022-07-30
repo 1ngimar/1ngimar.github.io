@@ -5,25 +5,30 @@ body {
 }
 
 .container-outer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1;
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
     gap: 60px;
 }
 
 .container-inner {
+    /* max-width: 300px; */
+    height: auto;
     /* text-align: center; */
     /* max-width: min-content; */
-    max-width: 33.3%; 
-    height: auto;
+    /* max-width: 33.3%; */
+    /* height: auto; */
 }
 
 svg {
+    /* max-width: 300px; */
     /* max-width: 33.3%;  */
     height: auto;
 }
 
-#topGroup,
+/* #topGroup,
 #leftGroup,
 #rightGroup {
     transition: all 1s ease;
@@ -57,4 +62,84 @@ body:hover #leftGroup {
 body:hover #rightGroup {
     transform: translateX(0%);
     opacity: 1;
+} */
+
+#advania-logo-1 {
+    /* animation: kaboom 5s ease alternate infinite; */
+}
+
+
+#leftGroup {
+    /* animation: kaboom 5s ease alternate infinite; */
+}
+
+#left-left, #left-left_2, #left-left_3 {
+    /* animation: kaboom 5s ease alternate infinite; */
+    /* animation-delay: 0.3; */
+}
+
+#left-right, #left-right_2, #left-right_3 {
+    /* animation: kaboom 5s ease alternate infinite; */
+    /* animation-delay: 0.3s; */
+}
+
+
+#rightGroup {
+    /* animation: kaboom 5s ease alternate infinite; */
+}
+
+#right-right, #right-right_2, #right-right_3, #right-right_4, #right-right_5 {
+    /* animation: kaboom 3s ease alternate infinite; */
+    /* animation-delay: 0.3; */
+}
+
+#right-left, #right-left_2, #right-left_3, #right-left_4, #right-left_5 {
+    /* animation: kaboom 5s ease alternate infinite; */
+    /* animation-delay: 0.3s; */
+}
+
+#topGroup {
+    /* animation: kaboom 5s ease alternate infinite; */
+}
+
+#top-up, #top-up_2, #top-up_3, #top-up_4, #top-up_5{
+    /* animation: kaboom 5s ease alternate infinite; */
+    /* animation-delay: 0.3s; */
+}
+
+#top-down, #top-down_2, #top-down_3, #top-down_4, #top-down_5 {
+    /* animation: kaboom 5s ease alternate infinite; */
+    /* animation-delay: 0.3s; */
+}
+
+
+/* #left {
+    animation-delay: 0.1s;
+} */
+
+
+/* #left_3 {
+    animation-delay: 0.2s;
+} */
+
+/* #left-left:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+#left-left:nth-child(3) {
+    animation-delay: 0.2s;
+} */
+
+
+@keyframes kaboom {
+    90% {
+        /* transform: scaleX(1.1); */
+        /* transform: scale(1.0); */
+        /* transform: skew(3deg, 2deg); */
+    }
+
+    100% {
+        transform: scale(1.1);
+        /* transform: skew(4deg, 3deg); */
+    }
 }
