@@ -6,217 +6,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fleeing animation</title>
     <link rel="stylesheet/less" type="text/css" href="./design3_files/styles.less" />
+    
+    <!-- <script src="../../node_modules/animejs/lib/anime.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/less"></script>
+    <!-- <script src="design3_files/bundle.js"></script> -->
+    <script type="text/javascript" src="design3_files/main.js"></script>
 </head>
 
-<script id="vertex-shader" type="x-shader/x-vertex">
 
-    attribute  vec4 vPosition;
-    attribute  vec4 vColor;
-    varying vec4 fColor;
-    
-    uniform mat4 rotation;
-    
-    void main()
-    {
-        fColor = vColor;
-        gl_Position = rotation * vPosition;
-    }
-</script>
 
-<script id="fragment-shader" type="x-shader/x-fragment">
-
-    precision mediump float;
-    
-    varying vec4 fColor;
-    
-    void
-    main()
-    {
-        gl_FragColor = fColor;
-    }
-</script>
-
-<script type="text/javascript" src="./solkerfi_files/webgl-utils.js"></script>
-<script type="text/javascript" src="./solkerfi_files/initShaders.js"></script>
-<script type="text/javascript" src="./solkerfi_files/MV.js"></script>
-<script type="text/javascript" src="./solkerfi_files/solkerfi.js"></script>
 
 <body id="body">
-
+    <svg width="484" height="733" viewBox="0 0 484 733" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="advania-logo-1" clip-path="url(#clip0_14_351)">
+            <g id="rightGroup">
+                <g id="right">
+                    <g id="right-right">
+                        <path id="Line 10" d="M350.933 393.624L238.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11" d="M238.5 458.5L350.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12" d="M350.683 394.056L350.5 263" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="right-left">
+                        <path id="Line 11_2" d="M350.5 263.5L238.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_2" d="M238.392 327.83L238.5 458" stroke="black" stroke-width="2" />
+                        <path id="Line 10_2" d="M238.142 328.264L350.5 263.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="right_2">
+                    <g id="right-right_2">
+                        <path id="Line 10_3" d="M462.933 199.624L350.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_3" d="M350.5 263.5L462.5 69.4999" stroke="black" stroke-width="2" />
+                        <path id="Line 12_3" d="M462.683 200.056L462.5 69" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="right-left_2">
+                        <path id="Line 11_4" d="M462.5 69.5L350.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_4" d="M350.392 133.83L350.5 264" stroke="black" stroke-width="2" />
+                        <path id="Line 10_4" d="M350.142 134.263L462.5 69.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="right_3">
+                    <g id="right-right_3">
+                        <path id="Line 10_5" d="M463.933 588.624L351.5 652.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_5" d="M351.5 652.5L463.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_5" d="M463.683 589.056L463.5 458" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="right-left_3">
+                        <path id="Line 11_6" d="M463.5 458.5L351.5 652.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_6" d="M351.392 522.83L351.5 653" stroke="black" stroke-width="2" />
+                        <path id="Line 10_6" d="M351.142 523.263L463.5 458.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="right_4">
+                    <g id="right-right_4">
+                        <path id="Line 10_7" d="M238.633 588.749L238.592 458.821" stroke="black" stroke-width="2" />
+                        <path id="Line 11_7" d="M238.5 458.5L125.842 654.11" stroke="black" stroke-width="2" />
+                        <path id="Line 12_7" d="M238.883 588.316L126.092 653.677" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="right-left_4">
+                        <path id="Line 10_8" d="M125.5 523.5L238.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_8" d="M238.5 458.5L125.988 653.601" stroke="black" stroke-width="2" />
+                        <path id="Line 12_8" d="M125.597 523.059L125.988 653.601" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="right_5">
+                    <g id="right-right_5">
+                        <path id="Line 10_9" d="M125.633 393.749L125.591 263.821" stroke="black" stroke-width="2" />
+                        <path id="Line 11_9" d="M125.5 263.5L12.8415 459.11" stroke="black" stroke-width="2" />
+                        <path id="Line 12_9" d="M125.883 393.316L13.0915 458.676" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="right-left_5">
+                        <path id="Line 10_10" d="M12.5 328.5L125.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_10" d="M125.5 263.5L12.9881 458.601" stroke="black" stroke-width="2" />
+                        <path id="Line 12_10" d="M12.5968 328.059L12.9881 458.601" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+            </g>
+            <g id="leftGroup">
+                <g id="left">
+                    <g id="left-left">
+                        <path id="Line 10_11" d="M125.501 393L125.501 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_11" d="M125.501 263.5L238.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_11" d="M125.252 392.568L238.5 458.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="left-right">
+                        <path id="Line 11_12" d="M238.5 458.5L125.501 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_12" d="M238.752 328.433L125.501 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 10_12" d="M238.501 328L238.501 457.797" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="left_2">
+                    <g id="left-left_2">
+                        <path id="Line 10_13" d="M237 198L237 69" stroke="black" stroke-width="2" />
+                        <path id="Line 11_13" d="M237 69.5L350.501 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_13" d="M237 198L350.5 263.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="left-right_2">
+                        <path id="Line 11_14" d="M350.501 263.5L237 69.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_14" d="M350.752 134.434L237 69.5" stroke="black" stroke-width="2" />
+                        <path id="Line 10_14" d="M350.501 134L350.501 263.797" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="left_3">
+                    <g id="left-left_3">
+                        <path id="Line 10_15" d="M238.501 588L238.501 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_15" d="M238.501 458.5L351.501 652.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_15" d="M238.252 587.567L351.501 652.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="left-right_3">
+                        <path id="Line 11_16" d="M351.501 652.5L238.501 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_16" d="M351.752 523.433L238.501 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 10_16" d="M351.501 523L351.501 652.797" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+            </g>
+            <g id="topGroup">
+                <g id="top">
+                    <g id="top-down">
+                        <path id="Line 10_17" d="M238 328.5L350.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_17" d="M350.585 263.5H125" stroke="black" stroke-width="2" />
+                        <path id="Line 12_17" d="M238.5 328.5L125.5 263.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="top-up">
+                        <path id="Line 10_18" d="M236.872 197.762L350.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 11_18" d="M350 263.5L124.5 263.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_18" d="M237.371 197.762L125.5 263.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="top_2">
+                    <g id="top-down_2">
+                        <path id="Line 10_19" d="M350 134.5L462.5 69.4999" stroke="black" stroke-width="2" />
+                        <path id="Line 11_19" d="M462.585 69.4999L237 69.4999" stroke="black" stroke-width="2" />
+                        <path id="Line 12_19" d="M350.5 134.5L237 69.4999" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="top-up_2">
+                        <path id="Line 10_20" d="M349.872 3.76196L462.5 69.4999" stroke="black" stroke-width="2" />
+                        <path id="Line 11_20" d="M463 69.4999L237.513 69.3727" stroke="black" stroke-width="2" />
+                        <path id="Line 12_20" d="M350.371 3.7625L237 69.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="top_3">
+                    <g id="top-down_3">
+                        <path id="Line 10_21" d="M351 523.499L463.5 458.499" stroke="black" stroke-width="2" />
+                        <path id="Line 11_21" d="M463.585 458.499H238" stroke="black" stroke-width="2" />
+                        <path id="Line 12_21" d="M351.5 523.499L238.5 458.499" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="top-up_3">
+                        <path id="Line 10_22" d="M350.5 394L463.5 458.499" stroke="black" stroke-width="2" />
+                        <path id="Line 11_22" d="M464 458.499L238.513 458.372" stroke="black" stroke-width="2" />
+                        <path id="Line 12_22" d="M350.5 394L238.5 458.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="top_4">
+                    <g id="top-down_4">
+                        <path id="Line 10_23" d="M238.242 718.426L126.092 653.676" stroke="black" stroke-width="2" />
+                        <path id="Line 11_23" d="M126.092 653.676L351.5 652.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_23" d="M237.743 718.425L351.5 652.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="top-up_4">
+                        <path id="Line 11_24" d="M351.5 652.5L126.092 653.676" stroke="black" stroke-width="2" />
+                        <path id="Line 12_24" d="M238.952 588.064L126.092 653.676" stroke="black" stroke-width="2" />
+                        <path id="Line 10_24" d="M238.451 588.065L351.5 652.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+                <g id="top_5">
+                    <g id="top-down_5">
+                        <path id="Line 10_25" d="M125.5 523.5L13.0922 458.676" stroke="black" stroke-width="2" />
+                        <path id="Line 11_25" d="M13.0922 458.676L238.5 458.5" stroke="black" stroke-width="2" />
+                        <path id="Line 12_25" d="M125.5 523.5L238.5 458.5" stroke="black" stroke-width="2" />
+                    </g>
+                    <g id="top-up_5">
+                        <path id="Line 11_26" d="M238.5 458.5L13.0921 458.676" stroke="black" stroke-width="2" />
+                        <path id="Line 12_26" d="M125.951 393.064L13.0921 458.676" stroke="black" stroke-width="2" />
+                        <path id="Line 10_26" d="M125.451 393.065L238.5 458.5" stroke="black" stroke-width="2" />
+                    </g>
+                </g>
+            </g>
+        </g>
+        <defs>
+            <clipPath id="clip0_14_351">
+                <rect width="484" height="733" fill="white" />
+            </clipPath>
+        </defs>
+    </svg>
 </body>
-<svg width="484" height="733" viewBox="0 0 484 733" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="advania-logo-1" clip-path="url(#clip0_14_351)">
-        <g id="rightGroup">
-            <g id="right">
-                <g id="right-right">
-                    <path id="Line 10" d="M350.933 393.624L238.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11" d="M238.5 458.5L350.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12" d="M350.683 394.056L350.5 263" stroke="black" stroke-width="2" />
-                </g>
-                <g id="right-left">
-                    <path id="Line 11_2" d="M350.5 263.5L238.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_2" d="M238.392 327.83L238.5 458" stroke="black" stroke-width="2" />
-                    <path id="Line 10_2" d="M238.142 328.264L350.5 263.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="right_2">
-                <g id="right-right_2">
-                    <path id="Line 10_3" d="M462.933 199.624L350.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_3" d="M350.5 263.5L462.5 69.4999" stroke="black" stroke-width="2" />
-                    <path id="Line 12_3" d="M462.683 200.056L462.5 69" stroke="black" stroke-width="2" />
-                </g>
-                <g id="right-left_2">
-                    <path id="Line 11_4" d="M462.5 69.5L350.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_4" d="M350.392 133.83L350.5 264" stroke="black" stroke-width="2" />
-                    <path id="Line 10_4" d="M350.142 134.263L462.5 69.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="right_3">
-                <g id="right-right_3">
-                    <path id="Line 10_5" d="M463.933 588.624L351.5 652.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_5" d="M351.5 652.5L463.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_5" d="M463.683 589.056L463.5 458" stroke="black" stroke-width="2" />
-                </g>
-                <g id="right-left_3">
-                    <path id="Line 11_6" d="M463.5 458.5L351.5 652.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_6" d="M351.392 522.83L351.5 653" stroke="black" stroke-width="2" />
-                    <path id="Line 10_6" d="M351.142 523.263L463.5 458.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="right_4">
-                <g id="right-right_4">
-                    <path id="Line 10_7" d="M238.633 588.749L238.592 458.821" stroke="black" stroke-width="2" />
-                    <path id="Line 11_7" d="M238.5 458.5L125.842 654.11" stroke="black" stroke-width="2" />
-                    <path id="Line 12_7" d="M238.883 588.316L126.092 653.677" stroke="black" stroke-width="2" />
-                </g>
-                <g id="right-left_4">
-                    <path id="Line 10_8" d="M125.5 523.5L238.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_8" d="M238.5 458.5L125.988 653.601" stroke="black" stroke-width="2" />
-                    <path id="Line 12_8" d="M125.597 523.059L125.988 653.601" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="right_5">
-                <g id="right-right_5">
-                    <path id="Line 10_9" d="M125.633 393.749L125.591 263.821" stroke="black" stroke-width="2" />
-                    <path id="Line 11_9" d="M125.5 263.5L12.8415 459.11" stroke="black" stroke-width="2" />
-                    <path id="Line 12_9" d="M125.883 393.316L13.0915 458.676" stroke="black" stroke-width="2" />
-                </g>
-                <g id="right-left_5">
-                    <path id="Line 10_10" d="M12.5 328.5L125.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_10" d="M125.5 263.5L12.9881 458.601" stroke="black" stroke-width="2" />
-                    <path id="Line 12_10" d="M12.5968 328.059L12.9881 458.601" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-        </g>
-        <g id="leftGroup">
-            <g id="left">
-                <g id="left-left">
-                    <path id="Line 10_11" d="M125.501 393L125.501 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_11" d="M125.501 263.5L238.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_11" d="M125.252 392.568L238.5 458.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="left-right">
-                    <path id="Line 11_12" d="M238.5 458.5L125.501 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_12" d="M238.752 328.433L125.501 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 10_12" d="M238.501 328L238.501 457.797" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="left_2">
-                <g id="left-left_2">
-                    <path id="Line 10_13" d="M237 198L237 69" stroke="black" stroke-width="2" />
-                    <path id="Line 11_13" d="M237 69.5L350.501 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_13" d="M237 198L350.5 263.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="left-right_2">
-                    <path id="Line 11_14" d="M350.501 263.5L237 69.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_14" d="M350.752 134.434L237 69.5" stroke="black" stroke-width="2" />
-                    <path id="Line 10_14" d="M350.501 134L350.501 263.797" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="left_3">
-                <g id="left-left_3">
-                    <path id="Line 10_15" d="M238.501 588L238.501 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_15" d="M238.501 458.5L351.501 652.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_15" d="M238.252 587.567L351.501 652.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="left-right_3">
-                    <path id="Line 11_16" d="M351.501 652.5L238.501 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_16" d="M351.752 523.433L238.501 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 10_16" d="M351.501 523L351.501 652.797" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-        </g>
-        <g id="topGroup">
-            <g id="top">
-                <g id="top-down">
-                    <path id="Line 10_17" d="M238 328.5L350.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_17" d="M350.585 263.5H125" stroke="black" stroke-width="2" />
-                    <path id="Line 12_17" d="M238.5 328.5L125.5 263.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="top-up">
-                    <path id="Line 10_18" d="M236.872 197.762L350.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 11_18" d="M350 263.5L124.5 263.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_18" d="M237.371 197.762L125.5 263.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="top_2">
-                <g id="top-down_2">
-                    <path id="Line 10_19" d="M350 134.5L462.5 69.4999" stroke="black" stroke-width="2" />
-                    <path id="Line 11_19" d="M462.585 69.4999L237 69.4999" stroke="black" stroke-width="2" />
-                    <path id="Line 12_19" d="M350.5 134.5L237 69.4999" stroke="black" stroke-width="2" />
-                </g>
-                <g id="top-up_2">
-                    <path id="Line 10_20" d="M349.872 3.76196L462.5 69.4999" stroke="black" stroke-width="2" />
-                    <path id="Line 11_20" d="M463 69.4999L237.513 69.3727" stroke="black" stroke-width="2" />
-                    <path id="Line 12_20" d="M350.371 3.7625L237 69.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="top_3">
-                <g id="top-down_3">
-                    <path id="Line 10_21" d="M351 523.499L463.5 458.499" stroke="black" stroke-width="2" />
-                    <path id="Line 11_21" d="M463.585 458.499H238" stroke="black" stroke-width="2" />
-                    <path id="Line 12_21" d="M351.5 523.499L238.5 458.499" stroke="black" stroke-width="2" />
-                </g>
-                <g id="top-up_3">
-                    <path id="Line 10_22" d="M350.5 394L463.5 458.499" stroke="black" stroke-width="2" />
-                    <path id="Line 11_22" d="M464 458.499L238.513 458.372" stroke="black" stroke-width="2" />
-                    <path id="Line 12_22" d="M350.5 394L238.5 458.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="top_4">
-                <g id="top-down_4">
-                    <path id="Line 10_23" d="M238.242 718.426L126.092 653.676" stroke="black" stroke-width="2" />
-                    <path id="Line 11_23" d="M126.092 653.676L351.5 652.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_23" d="M237.743 718.425L351.5 652.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="top-up_4">
-                    <path id="Line 11_24" d="M351.5 652.5L126.092 653.676" stroke="black" stroke-width="2" />
-                    <path id="Line 12_24" d="M238.952 588.064L126.092 653.676" stroke="black" stroke-width="2" />
-                    <path id="Line 10_24" d="M238.451 588.065L351.5 652.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-            <g id="top_5">
-                <g id="top-down_5">
-                    <path id="Line 10_25" d="M125.5 523.5L13.0922 458.676" stroke="black" stroke-width="2" />
-                    <path id="Line 11_25" d="M13.0922 458.676L238.5 458.5" stroke="black" stroke-width="2" />
-                    <path id="Line 12_25" d="M125.5 523.5L238.5 458.5" stroke="black" stroke-width="2" />
-                </g>
-                <g id="top-up_5">
-                    <path id="Line 11_26" d="M238.5 458.5L13.0921 458.676" stroke="black" stroke-width="2" />
-                    <path id="Line 12_26" d="M125.951 393.064L13.0921 458.676" stroke="black" stroke-width="2" />
-                    <path id="Line 10_26" d="M125.451 393.065L238.5 458.5" stroke="black" stroke-width="2" />
-                </g>
-            </g>
-        </g>
-    </g>
-    <defs>
-        <clipPath id="clip0_14_351">
-            <rect width="484" height="733" fill="white" />
-        </clipPath>
-    </defs>
-</svg>
-<!-- <script src="/assets/design-system/js/libraries/iframe-resizer/iframeResizer.contentWindow.min.js"></script> -->
-<script type="text/javascript" src="design3_files/script.js"></script>
 
 </html>
