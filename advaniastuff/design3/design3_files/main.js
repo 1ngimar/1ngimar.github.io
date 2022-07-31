@@ -31,33 +31,32 @@ window.onload = function () {
     var triangles = []
     let triangles_with_centroid = []
 
-    // Array.prototype.forEach.call(svg.children, mainGroup => {
-    //     Array.prototype.forEach.call(mainGroup.children, side => {
-    //         Array.prototype.forEach.call(side.children, triangle => {
-    //             let attr = triangle.getBoundingClientRect();
-    //             let top = attr.top;
-    //             let right = attr.right;
-    //             let bottom = attr.bottom;
-    //             let left = attr.left;
-    //             triangles_with_centroid.push(triangle, calcCentroid(top, right, bottom, left));
-    //             triangles.push(triangle);
-    //         });
-    //     });
-    // });
+    Array.prototype.forEach.call(svg.children, mainGroup => {
+        Array.prototype.forEach.call(mainGroup.children, side => {
+            Array.prototype.forEach.call(side.children, triangle => {
+                let attr = triangle.getBoundingClientRect();
+                let top = attr.top;
+                let right = attr.right;
+                let bottom = attr.bottom;
+                let left = attr.left;
+                triangles_with_centroid.push(triangle, calcCentroid(top, right, bottom, left));
+                triangles.push(triangle);
+            });
+        });
+    });
 
-    let animation = anime({
-        targets: 'div',
-        translateX: 100,
-        borderRadius: 50,
-        duration: 2000,
-        easing: 'linear',
-        direction: 'alternate'
-      });
-    // console.log(triangles)
+    // let animation = anime({
+    //     targets: 
+    // })
 
-    // var unique = require('uniq');
+    // let animation = anime({
+    //     targets: 'div',
+    //     translateX: 100,
+    //     borderRadius: 50,
+    //     duration: 2000,
+    //     easing: 'linear',
+    //     direction: 'alternate'
+    //   });
 
-    // var data = [1, 2, 2, 3, 4, 5, 5, 5, 6];
 
-    // console.log(unique(data));
 }
