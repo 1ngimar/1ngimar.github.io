@@ -70,7 +70,7 @@ function Vehicle(x, y, type, tr) {
 
 Vehicle.prototype.behaviors = function () {
 	var arrive = this.arrive(this.target);
-	var mouse = createVector(mouseX, mouseY);
+	var mouse = createVector(mouseX -300, mouseY - 120);
 	// console.log(mouse);
 	var flee = this.flee(mouse);
 
