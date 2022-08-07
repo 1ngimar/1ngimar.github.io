@@ -140,7 +140,7 @@ Vehicle.prototype.show = function () {
 	if (this.centerPos) {
 		stroke(255, 0, 0)
 		strokeWeight(12)
-		point(this.centerPos.x, this.centerPos.y)
+		// point(this.centerPos.x, this.centerPos.y)
 
 		// stroke(100, 25, 100)
 		// strokeWeight(10)
