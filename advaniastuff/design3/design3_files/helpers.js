@@ -2,19 +2,6 @@ const getRandomNumber = (num) => {
 	return Math.floor(Math.random() * (num + 1));
 };
 
-function getMax(t1, t2, t3) {
-	let temp = max(t1, t2);
-	let temp2 = max(t2, t3);
-	return max(temp, temp2);
-}
-
-function getMin(t1, t2, t3) {
-	let temp = min(t1, t2);
-	let temp2 = min(t2, t3);
-	return min(temp, temp2);
-}
-
-
 function uniq(a) {
 	var seen = {};
 	return a.filter(function (item) {

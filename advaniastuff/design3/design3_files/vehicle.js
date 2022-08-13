@@ -1,8 +1,7 @@
-function Vehicle(x, y, type, tr) {
+function Vehicle(x, y, type) {
 	// this.pos = createVector(random(width), random(height)); // setting initial pos to a random pos
 	this.x = x;
 	this.y = y;
-	this.tr = tr;
 	// this.pos = createVector(x + tr[0], y + tr[1])
 	// this.pos = createVector(x, y)
 	let mw = w;
@@ -12,39 +11,39 @@ function Vehicle(x, y, type, tr) {
 	switch (type) {
 		case 'top-up':
 			this.lines = [
-				[0, 0, mw, 0],
-				[0, 0, mw / 2, -mh],
-				[mw, 0, mw / 2, -mh]];
+				[x, y, x+mw, y],
+				[x, y, x + mw / 2, y-mh],
+				[x+mw, y, x+mw / 2, y-mh]];
 			break;
 		case 'top-down':
 			this.lines = [
-				[0, 0, mw, 0],
-				[0, 0, mw / 2, mh],
-				[mw, 0, mw / 2, mh]];
+				[x, y, x+mw, y],
+				[x, y, x + mw / 2, y+mh],
+				[x+mw, y, x+mw / 2, y+mh]];
 			break;
 		case 'left-up':
 			this.lines = [
-				[0, 0, mw / 2, mh],
-				[mw / 2, mh, mw / 2, mh * 3],
-				[mw / 2, mh * 3, 0, 0]];
+				[x, y, x+mw / 2, y+mh],
+				[x+mw / 2, y+mh, x+mw / 2, y+mh * 3],
+				[x+mw / 2, y+mh * 3, x, y]];
 			break;
 		case 'left-down':
 			this.lines = [
-				[mw / 2, mh * 3, 0, 0],
-				[0, 0, 0, mh * 2],
-				[0, mh * 2, mw / 2, mh * 3]];
+				[x+mw / 2, y+mh * 3, x, y],
+				[x, y, x, y+mh * 2],
+				[x, y+mh * 2, x+mw / 2, y+mh * 3]];
 			break;
 		case 'right-up':
 			this.lines = [
-				[mw / 2, mh * 3, mw / 2, mh],
-				[mw / 2, mh * 3, mw, 0],
-				[mw / 2, mh, mw, 0]];
+				[x+mw / 2, y+mh * 3, x+mw / 2, y+mh],
+				[x+mw / 2, y+mh * 3, x+mw, y],
+				[x+mw / 2, y+mh, x+mw, y]];
 			break;
 		case 'right-down':
 			this.lines = [
-				[mw, 0, mw, mh * 2],
-				[mw / 2, mh * 3, mw, 0],
-				[mw / 2, mh * 3, mw, mh * 2]];
+				[x+mw, y, x+mw, y+mh * 2],
+				[x+mw / 2, y+mh * 3, x+mw, y],
+				[x+mw / 2, y+mh * 3, x+mw, y+mh * 2]];
 			break;
 		default:
 			break;
@@ -70,8 +69,7 @@ function Vehicle(x, y, type, tr) {
 
 Vehicle.prototype.behaviors = function () {
 	var arrive = this.arrive(this.target);
-	var mouse = createVector(mouseX -300, mouseY - 120);
-	// console.log(mouse);
+	var mouse = createVector(mouseX -w/2, mouseY - h);
 	var flee = this.flee(mouse);
 
 	arrive.mult(1);
@@ -101,7 +99,7 @@ Vehicle.prototype.arrive = function (target) {
 Vehicle.prototype.flee = function (target) {
 	var desired = p5.Vector.sub(target, this.centerPos);
 	var d = desired.mag();
-	if (d < 100) {
+	if (d < 50) {
 		desired.setMag(this.maxspeed);
 		desired.mult(-1);
 		var steer = p5.Vector.sub(desired, this.vel);
@@ -131,7 +129,7 @@ Vehicle.prototype.update = function () {
 Vehicle.prototype.show = function () {
 
 	stroke(0);
-	strokeWeight(3);
+	strokeWeight(2);
 	for (let i = 0; i < this.lines.length; i++) {
 		var l = this.lines[i];
 		// line(l[0], l[1], l[2], l[3]);
