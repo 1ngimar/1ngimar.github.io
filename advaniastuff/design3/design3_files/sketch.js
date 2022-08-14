@@ -64,7 +64,7 @@ function setup() {
 
 function draw() {
 	background(200);
-	translate(w / 2, h);
+	translate(w / 2, h); // make sure to change mouse offset if this is changed
 
 	for (var i = 0; i < triangles.length; i++) {
 		var t = triangles[i];
