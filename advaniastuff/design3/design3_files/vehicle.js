@@ -73,7 +73,7 @@ Vehicle.prototype.behaviors = function () {
 	var flee = this.flee(mouse);
 
 	arrive.mult(1);
-	flee.mult(5);
+	flee.mult(3);
 
 	this.applyForce(arrive);
 	this.applyForce(flee);
